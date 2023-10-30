@@ -45,6 +45,50 @@ class User {
     }
   }
 }
+class Product {
+  constructor(name, price, description) {
+    this.id = Math.floor(10000 + Math.random() * 90000)
+    this.createDate = new Date().toISOString()
+    this.name = name
+    this.price = price
+    this.description = description
+  }
+  static #list = []
+
+  static getList = () => this.#list
+
+  static add(product) {
+    this.#list.push(product)
+  }
+
+  static getById = (id) =>
+    this.#list.find((product) => product.id === id)
+
+  static updateById(id, data) {
+    const product = this.getById(id)
+    if (product) {
+      if (data.name) product.name = data.name
+      if (data.price) product.price = data.price
+      if (data.description)
+        product.description = data.description
+      return true
+    } else {
+      return false
+    }
+  }
+
+  static deleteById(id) {
+    const index = this.#list.findIndex(
+      (product) => product.id === id,
+    )
+    if (index !== -1) {
+      this.#list.splice(index, 1)
+      return true
+    } else {
+      return false
+    }
+  }
+}
 // ================================================================
 // router.get Створює нам один ентпоїнт
 
@@ -83,6 +127,39 @@ router.post('/user-create', function (req, res) {
 })
 // ================================================================
 
+router.get('/product-create', function (req, res) {
+  res.render('product-create', {
+    style: 'product-create',
+  })
+})
+// ================================================================
+
+router.post('/product-create', function (req, res) {
+  const { name, price, description } = req.body
+  const product = new Product(name, price, description)
+  Product.add(product)
+  console.log(Product.getList())
+  res.render('alert', {
+    style: 'alert',
+    info: 'Товар успішно додано',
+  })
+})
+
+// ================================================================
+router.get('/product-list', function (req, res) {
+  const productList = Product.getList()
+  res.render('product-list', {
+    style: 'product-list',
+    data: {
+      products: {
+        productList,
+        isEmpty: productList.length === 0,
+      },
+    },
+  })
+})
+// ================================================================
+
 router.get('/user-delete', function (req, res) {
   const { id } = req.query
 
@@ -95,6 +172,19 @@ router.get('/user-delete', function (req, res) {
 })
 // ================================================================
 
+// ================================================================
+
+router.get('/user-delete', function (req, res) {
+  const { id } = req.query
+
+  User.deleteById(Number(id))
+
+  res.render('success-info', {
+    style: 'success-info',
+    info: 'Користувач видалений',
+  })
+})
+// ================================================================
 router.post('/user-update', function (req, res) {
   const { email, password, id } = req.body
   let result = false
@@ -109,6 +199,62 @@ router.post('/user-update', function (req, res) {
     style: 'success-info',
     info: result
       ? 'Емайл пошта оновлена'
+      : 'Cталася помилка',
+  })
+})
+// ================================================================
+router.post('/product-edit', function (req, res) {
+  const { name, price, description, id } = req.body
+  const product = Product.updateById(Number(id), {
+    name,
+    price,
+    description,
+  })
+
+  if (product) {
+    return res.render('alert', {
+      style: 'alert',
+      info: 'Дані товару успішно оновлено',
+    })
+  } else {
+    return res.render('alert', {
+      style: 'alert',
+      info: 'Продукт з таким ID не знайдено',
+    })
+  }
+})
+// ================================================================
+router.get('/product-edit', function (req, res) {
+  const { id } = req.query
+  const product = Product.getById(Number(id))
+  if (product) {
+    return res.render('product-edit', {
+      style: 'product-edit',
+      data: {
+        name: product.name,
+        price: product.price,
+        id: product.id,
+        description: product.description,
+      },
+    })
+  } else {
+    return res.render('alert', {
+      style: 'alert',
+      info: 'Продукт з таким ID не знайдено',
+    })
+  }
+})
+// ================================================================
+
+router.get('/product-delete', function (req, res) {
+  const { id } = req.query
+
+  Product.deleteById(Number(id))
+
+  res.render('alert', {
+    style: 'alert',
+    info: result
+      ? 'Товар успішно видалено'
       : 'Cталася помилка',
   })
 })

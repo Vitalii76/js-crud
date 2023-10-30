@@ -1,0 +1,23 @@
+{{#with data}}
+<div class="form">
+    <h1 class="form_title">Оновити пошту користувача</h1>
+    <form method="POST" action="/product-edit">
+        <div class="form_content">
+            <div class="form_field">
+                <label for="id" class="form_label">ID: </label>
+                <input type="id" name="id" class="form_input">
+            </div>
+            <div class="form_field">
+                <label for="email" class="form_label">Нова еmail адреса: </label>
+                <input type="email" name="email" class="form_input">
+            </div>
+            <div class="form_field">
+                <label for="password" class="form_label">Пароль: </label>
+                <input type="password" name="password" class="form_input">
+            </div>
+            <button class="form_button">Оновити дані</button>
+            <a href="/product-delete?id={{id}}" class="form__button red">Видалити товар</a>
+        </div>
+    </form>
+</div>
+{{/with}}

@@ -1,0 +1,55 @@
+{{!
+Це код container файлу для index сторінки,
+в якому міститься код, котрий буде віддаватися по шляху (PATH) - "/"
+}}
+
+<div class="main">
+  <div class="form">
+    <h1 class="form_title">Створення товару</h1>
+    <form method="POST" action="/product-create">
+
+      <div class="form_content">
+        <h2 class="form_title">Інформація про товар</h2>
+        <div class="form_field">
+          <label for="name" class="form_label">Назва товару </label>
+          <input type="name" name="name" class="form_input">
+        </div>
+        <div class="form_field">
+          <label for="price" class="form_label">Ціна </label>
+          <input type="price" name="price" class="form_input">
+        </div>
+        <div class="form_field">
+          <label for="description" class="form_label">Короткий опис товару </label>
+          <input type="description" name="description" class="form_input">
+          <p class="form_info">Відображується у картці товару</p>
+        </div>
+        <button class="form_button">Створити товар</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{{!
+Цей код містить лише те, що буде виводитись в
+
+<body>
+  Адже наш layout/default.hbs має вже структуру HTML
+  }}
+
+  {{!-- <form class="form">
+    <h2 class="form_title">{{title}}</h2>
+
+    <div class="form_input_list">
+      {{#each inputs}}
+      <input type="{{type}}" class="form_input" placeholder="{{placeholder}}" name="{{name}}" id="form-input-{{id}}">
+      {{/each}}
+    </div>
+    <div class="form_checkbox">
+
+      <input type="checkbox" name="{{checkbox.name}}" id="{{checkbox.name}}">
+      <div></div>
+      <label for="{{checkbox.name}}">{{checkbox.label}}</label>
+    </div>
+    <button type="submit" class="form_button">{{button}}</button>
+    <p class="form_info">{{info}}</p>
+  </form> --}}
